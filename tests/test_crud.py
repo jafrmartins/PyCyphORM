@@ -62,7 +62,7 @@ def test_crud_roundtrip():
         assert updated == 1
 
         alice = users.first({"id": alice_id})
-        assert alice[1] == "Alice" and alice[3] == 31
+        assert alice["name"] == "Alice" and alice["age"] == 31
 
         deleted = users.delete({"id": bob_id})
         assert deleted == 1
@@ -87,7 +87,7 @@ def test_persistence_across_instances():
         orm2 = ORM(db_path, cnf["PASSWORD"], cnf["SALT"], SCHEMA)
         rows = orm2.model("users").find()
         assert len(rows) == 1
-        assert rows[0][1] == "Carol"
+        assert rows[0]["name"] == "Carol"
 
 
 if __name__ == "__main__":

@@ -125,15 +125,16 @@ class Model(QueryBuilder):
         sql = self.__select__(self.table, ["*"], where)
         cur = self.conn.cursor()
         cur.execute(sql)
-        rows = cur.fetchall()
-        return rows
+        cols = [d[0] for d in cur.description]
+        return [dict(zip(cols, row)) for row in cur.fetchall()]
 
     def first(self, where):
         sql = self.__select__(self.table, ["*"], where)
         cur = self.conn.cursor()
         cur.execute(sql)
+        cols = [d[0] for d in cur.description]
         row = cur.fetchone()
-        return row
+        return dict(zip(cols, row)) if row else None
 
 class ORM:
 
